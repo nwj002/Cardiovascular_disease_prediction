@@ -72,18 +72,20 @@ def predict_cvd_risk(data: UserData):
         best_prediction = 1 - best_model.predict_proba(input_data_transformed)[0, 1]
         final_prediction = 1 - final_model.predict_proba(input_data_transformed)[0, 1]
 
-        # Average the probabilities (simple ensemble approach)
-        average_prediction = (best_prediction + final_prediction) / 2
+        # Multiply probabilities by 100 to convert to percentage
+        best_prediction_percent = best_prediction * 100
+        final_prediction_percent = final_prediction * 100
+        average_prediction_percent = (best_prediction_percent + final_prediction_percent) / 2
 
-        print(f"✅ Best Model Probability (CVD risk): {best_prediction:.4f}, "
-              f"Final Model Probability (CVD risk): {final_prediction:.4f}, "
-              f"Average: {average_prediction:.4f}")
+        print(f"✅ Best Model Probability (CVD risk): {best_prediction_percent:.2f}%, "
+              f"Final Model Probability (CVD risk): {final_prediction_percent:.2f}%, "
+              f"Average: {average_prediction_percent:.2f}%")
 
-        # Return probabilities
+        # Return probabilities as percentages
         return {
-            "best_model_probability": float(best_prediction),
-            "final_model_probability": float(final_prediction),
-            "average_probability": float(average_prediction)
+            "best_model_probability": float(best_prediction_percent),
+            "final_model_probability": float(final_prediction_percent),
+            "average_probability": float(average_prediction_percent)
         }
 
     except Exception as e:
