@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware  # <-- Import CORS middleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -11,10 +12,21 @@ import uvicorn
 
 app = FastAPI(title="CVD Risk Prediction API")
 
-# Serve static files (e.g., HTML, CSS, JS) from the "src/frontend" directory
+origins = [
+    "http://localhost:3001",  
+    "http://127.0.0.1:3001"     
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,      
+    allow_credentials=True,
+    allow_methods=["*"],        
+    allow_headers=["*"],        
+)
+
 app.mount("/static", StaticFiles(directory="src/frontend"), name="static")
 
-# Define the input data schema using Pydantic
 class UserData(BaseModel):
     male: int
     age: int
