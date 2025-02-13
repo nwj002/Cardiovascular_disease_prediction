@@ -81,8 +81,11 @@ def predict_cvd_risk(data: UserData):
         input_data_transformed = preprocessor.transform(input_df)
 
         # Get probability predictions from both models (inverting probabilities)
-        best_prediction = 1 - best_model.predict_proba(input_data_transformed)[0, 1]
-        final_prediction = 1 - final_model.predict_proba(input_data_transformed)[0, 1]
+        # best_prediction = 1 - best_model.predict_proba(input_data_transformed)[0, 1]
+        # final_prediction = 1 - final_model.predict_proba(input_data_transformed)[0, 1]
+
+        best_prediction = best_model.predict_proba(input_data_transformed)[0, 1]  # Probability of CVD
+        final_prediction = final_model.predict_proba(input_data_transformed)[0, 1]  # Probability of CVD
 
         # Multiply probabilities by 100 to convert to percentage
         best_prediction_percent = best_prediction * 100
